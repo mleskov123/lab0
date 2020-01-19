@@ -2,11 +2,11 @@
 
 <h2>Introduction</h2>
 <p>
-  In this assignment you will solve two short problems as a way to familiarize
+  In this lab you will solve two short problems as a way to familiarize
   yourself with the Go programming language. We expect you to already have a
   basic knowledge of the language. If you're starting from nothing, we highly
   recommend going through the <a href="http://tour.golang.org/list">Golang tour</a>
-  before you begin this assignment.
+  before you begin this lab.
 </p>
 <h2>Software</h2>
 <p>
@@ -38,7 +38,7 @@
   To test the correctness of your code, run the following:
 </p>
 <pre>
-  $ cd assignment1-1
+  $ cd lab0
   $ go test
 </pre>
 <p>
@@ -47,7 +47,7 @@
 <pre>
   $ go test
   PASS
-  ok      /path/to/assignment1-1   0.009s
+  ok      /path/to/lab0   0.009s
 </pre>
 
 ### Point Distribution
@@ -62,20 +62,25 @@
 <tr><td>Q2_4</td><td>3</td></tr>
 </table>
 
-### Submitting Assignment
-<p> Now you need to submit your assignment. Commit your change and push it to the remote repository by doing the following: </p>
+### Submitting Lab Assignment
+<p> Now you need to submit your lab assignment. Commit your change
+and push it to the remote repository by doing the following: </p>
 
 ```bash
 $ git commit -am "[you fill me in]"
-$ git tag -a -m "i finished assignment 1-1" a11-handin
+$ git tag -a -m "i finished lab0" lab0-handin
 $ git push origin master
-$ git push origin a11-handin
+$ git push origin lab0-handin
 ```
-<p>Please fill in <a href="https://forms.gle/xQEMTYZALsCdz5657">this google form</a> with your GitHub username and your Princeton NetID. This allows us to map your GitHub to your Princeton information for grading. We'll run the grading scripts daily and send your grading information to your Princeton email.</p>
+<p>Please fill in <a href="https://forms.gle/xQEMTYZALsCdz5657">this
+google form</a> with your GitHub username and your Princeton NetID.
+This allows us to map your GitHub to your Princeton information for
+grading. We'll run the grading scripts daily and send your grading
+information to your Princeton email.</p>
 
 <p>In order to overwrite a tag use the force flag as follows.</p>
 
 ```bash
-$ git tag -fam "i finished assignment 1-1" a11-handin
+$ git tag -fam "i finished lab0" lab0-handin
 $ git push -f --tags
 ```
