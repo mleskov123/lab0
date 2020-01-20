@@ -62,28 +62,9 @@
 <tr><td>Q2_4</td><td>3</td></tr>
 </table>
 
-### Submitting Lab Assignment
-<p> Now you need to submit your lab assignment. Commit your change
-and push it to the remote repository by doing the following: </p>
+<h2>Submitting Lab 0</h2>
 
-```bash
-$ git commit -am "[you fill me in]"
-$ git tag -a -m "i finished lab0" lab0-handin
-$ git push origin master
-$ git push origin lab0-handin
-```
-<p>Please fill in <a href="https://forms.gle/xQEMTYZALsCdz5657">this
-google form</a> with your GitHub username and your Princeton NetID.
-This allows us to map your GitHub to your Princeton information for
-grading. We'll run the grading scripts daily and send your grading
-information to your Princeton email.</p>
-
-<p>In order to overwrite a tag use the force flag as follows.</p>
-
-```bash
-$ git tag -fam "i finished lab0" lab0-handin
-$ git push -f --tags
-```
+TBD
 
 <h2>Acknowledgements</h2>
 <p>This assignment is adapted from Princeton's COS418 course. Thanks
