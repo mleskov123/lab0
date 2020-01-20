@@ -84,3 +84,7 @@ information to your Princeton email.</p>
 $ git tag -fam "i finished lab0" lab0-handin
 $ git push -f --tags
 ```
+
+<h2>Acknowledgements</h2>
+<p>This assignment is adapted from Princeton's COS418 course. Thanks
+to Wyatt Lloyd and Michael J. Freedman for their support.</p>
