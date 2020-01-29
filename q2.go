@@ -60,14 +60,17 @@ func sum(num int, fileName string) int {
 		sumCh[i] = make(chan int)
 	}
 
-	// MARY FIX THIS SO ITS EVENLY SPREAD AMONGST SOME OF THE THREADS
-	// FOR EXAMPLE: 100 threads 190 words. each thread will have 1 word
-	// but one thread will have 91 words
+	// if there is extra work to be done, some threads will
+	// have to put in more work than others
 	var extraWork int = len(vals) - (shareOfWork*num)
 
 	var idx int = 0
 	for i := 0; i < num; i++ {
-		workToDispense := shareOfWork + extraWork
+		workToDispense := shareOfWork
+		if extraWork > 0{
+			workToDispense++
+			extraWork--
+		}
 		numsCh := make(chan int, workToDispense)
 		for j := 0; j < workToDispense; j++ {
 			numsCh <- vals[idx]
@@ -75,7 +78,7 @@ func sum(num int, fileName string) int {
 		}
 		close(numsCh)
 		go sumWorker(numsCh, sumCh[i])
-		extraWork = 0
+
 
 	}
 	var sum int = 0
