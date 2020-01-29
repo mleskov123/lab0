@@ -2,6 +2,7 @@ package cos418_hw1_1
 
 import (
 	"bufio"
+	"errors"
 	"io"
 	"os"
 	"strconv"
@@ -31,10 +32,26 @@ func sum(num int, fileName string) int {
 	// TODO: implement me
 	// HINT: use `readInts` and `sumWorkers`
 	// HINT: used buffered channels for splitting numbers between workers
+
+	if num < 1{
+		checkError(errors.New("number of threads must be at least one"))
+	}
+
 	file, err := os.Open(fileName)
 	checkError(err)
 	vals, err := readInts(file)
 	checkError(err)
+
+	// no work to do
+	if len(vals) == 0 {
+		return 0
+	}
+
+	// do not need all the threads asked for. we could simply
+	// give the extra threads a zero value, but this is extra work than needed
+	if len(vals) < num{
+		num = len(vals)
+	}
 
 	shareOfWork := int(len(vals)/num)
 	// each go routine needs individual out channel
@@ -42,32 +59,28 @@ func sum(num int, fileName string) int {
 	for i:=0; i < num; i++{
 		sumCh[i] = make(chan int)
 	}
-	var sum int = 0
+
+	// MARY FIX THIS SO ITS EVENLY SPREAD AMONGST SOME OF THE THREADS
+	// FOR EXAMPLE: 100 threads 190 words. each thread will have 1 word
+	// but one thread will have 91 words
+	var extraWork int = len(vals) - (shareOfWork*num)
+
 	var idx int = 0
-	for i := 0; i < num-1; i++ {
-		numsCh := make(chan int, shareOfWork)
-		for j := 0; j < shareOfWork; j++ {
+	for i := 0; i < num; i++ {
+		workToDispense := shareOfWork + extraWork
+		numsCh := make(chan int, workToDispense)
+		for j := 0; j < workToDispense; j++ {
 			numsCh <- vals[idx]
 			idx++
 		}
 		close(numsCh)
 		go sumWorker(numsCh, sumCh[i])
+		extraWork = 0
 
 	}
-	{
-		numsCh := make(chan int, len(vals) - idx)
-		for ; idx < len(vals); idx++ {
-			tmp := vals[idx]
-			numsCh <- tmp
-		}
-		close(numsCh)
-		go sumWorker(numsCh, sumCh[num-1])
-	}
-	var count int = 1
+	var sum int = 0
 	for i:=0; i < num; i++ {
-
 		sum = sum + <-sumCh[i]
-		count++
 	}
 	return sum
 }
