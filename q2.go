@@ -3,6 +3,7 @@ package cos418_hw1_1
 import (
 	"bufio"
 	"io"
+	"os"
 	"strconv"
 )
 
@@ -12,6 +13,13 @@ import (
 func sumWorker(nums chan int, out chan int) {
 	// TODO: implement me
 	// HINT: use for loop over `nums`
+	var sum int = 0
+	for v := range nums{
+		sum += v
+	}
+	out <- sum
+	close(out)
+	return
 }
 
 // Read integers from the file `fileName` and return sum of all values.
@@ -23,7 +31,45 @@ func sum(num int, fileName string) int {
 	// TODO: implement me
 	// HINT: use `readInts` and `sumWorkers`
 	// HINT: used buffered channels for splitting numbers between workers
-	return 0
+	file, err := os.Open(fileName)
+	checkError(err)
+	vals, err := readInts(file)
+	checkError(err)
+
+	shareOfWork := int(len(vals)/num)
+	// each go routine needs individual out channel
+	var sumCh = make([]chan int, num)
+	for i:=0; i < num; i++{
+		sumCh[i] = make(chan int)
+	}
+	var sum int = 0
+	var idx int = 0
+	for i := 0; i < num-1; i++ {
+		numsCh := make(chan int, shareOfWork)
+		for j := 0; j < shareOfWork; j++ {
+			numsCh <- vals[idx]
+			idx++
+		}
+		close(numsCh)
+		go sumWorker(numsCh, sumCh[i])
+
+	}
+	{
+		numsCh := make(chan int, len(vals) - idx)
+		for ; idx < len(vals); idx++ {
+			tmp := vals[idx]
+			numsCh <- tmp
+		}
+		close(numsCh)
+		go sumWorker(numsCh, sumCh[num-1])
+	}
+	var count int = 1
+	for i:=0; i < num; i++ {
+
+		sum = sum + <-sumCh[i]
+		count++
+	}
+	return sum
 }
 
 // Read a list of integers separated by whitespace from `r`.
